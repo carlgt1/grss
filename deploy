@@ -1,0 +1,14 @@
+#!/bin/bash
+cd $HOME/Downloads
+sudo cp boincscr /Lib*/App*/BOI*/
+rm -f grsswin.zip grss-release.zip
+rm resources_for_install/.DS_Store
+#scp carlc@192.168.2.3:/cygdrive/p/temp/*.exe .
+zip -r grss-release.zip boincscr boincscr.exe boincscr_x64.exe resources_for_install/
+mv resources_for_install res
+sudo cp res/* /Lib*/App*/BOI*/
+zip -r grsswin.zip grss.exe grss_x64.exe res/
+mv res resources_for_install
+scp gr*.zip carlgt1@qcn-upl:/var/www/carlc/
+cd $HOME/projects/grss
+scp grss.zip carlgt1@qcn-upl:_grss.zip

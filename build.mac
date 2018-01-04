@@ -1,0 +1,50 @@
+#!/bin/bash
+#!/bin/sh
+if ( test "$1" = "all" || test "$2" = "all" )  then
+ export CXX=
+ export CC=
+ export MARCH=
+ export SDKROOT=
+ export LDFLAGS=
+ export CPPFLAGS=
+ export CFLAGS=
+ export CXXFLAGS=
+ cd freetype-2.3.9
+ chmod uog+rx build.mac
+ ./build.mac
+ cd ../jpeg-6b
+ chmod uog+rx build.mac
+ ./build.mac
+ cd ../ftgl
+ chmod uog+rx build.mac
+ ./build.mac
+ cd ../
+ export CXX=
+ export CC=
+ export MARCH=
+ export SDKROOT=
+ export LDFLAGS=
+ export CPPFLAGS=
+ export CFLAGS=
+ export CXXFLAGS=
+fi
+if ( test "$1" = "all" || test "$1" = "demo" || test "$2" = "demo" ) then
+  xcodebuild OTHER_CFLAGS='-D_DEMO_BUILD -D_THREAD_SAFE -DNDEBUG -DSANDBOX -include ../clientgui/mac/config.h' -project grss.xcodeproj -target grintelss -configuration Deployment clean build
+  rm -f mac_build/grss.app/Contents/MacOS/*
+  cp build/Deployment/grss mac_build/grss.app/Contents/MacOS/
+  rm -f mac_build/grss.app/Contents/Resources/*
+  cp res-backup/grss.icns mac_build/grss.app/Contents/Resources/
+  cp res/* mac_build/grss.app/Contents/Resources/
+  cd mac_build
+  zip -r grssmac.zip grss.app
+  mv grssmac.zip ../
+  cd ../
+  cp grssmac.zip $HOME/Downloads
+fi
+# always build the release verson
+# note I'm forcing cflags here, just in case I had left a _DEMO_BUILD in the project file! :-)
+  xcodebuild OTHER_CFLAGS='-D_THREAD_SAFE -DNDEBUG -DSANDBOX -include ../clientgui/mac/config.h' -project grss.xcodeproj -target grintelss -configuration Deployment clean build
+  rm -rf $HOME/Downloads/resources_for_install
+  mkdir $HOME/Downloads/resources_for_install
+  cp res/* $HOME/Downloads/resources_for_install
+  cp build/Deployment/grss $HOME/Downloads/boincscr

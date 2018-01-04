@@ -1,0 +1,2 @@
+sudo cp $HOME/Downloads/boincscr '/Library/Application Support/BOINC Data'
+sudo cp $HOME/Downloads/resources_for_install/* '/Library/Application Support/BOINC Data'
